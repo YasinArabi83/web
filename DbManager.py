@@ -9,7 +9,7 @@ from model.base import Base
 
 
 class DbManager:
-    def __init__(self, db_path: str,session):
+    def __init__(self, db_path: str, session):
         self.session = session
 
     def save_to_db(self, ads):
@@ -19,5 +19,9 @@ class DbManager:
         print('Ads saved')
 
     def get_all(self):
-        x = self.session.query(Car).all()
-        return x
+        all_ads = self.session.query(Car).all()
+        return all_ads
+
+    def get_cars_between_prices(self, start: int, end: int):
+        cars = self.session.query(Car).filter(Car.price.between(start, end)).all()
+        return cars
