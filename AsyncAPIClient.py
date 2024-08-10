@@ -1,12 +1,11 @@
 import asyncio
-import time
 
 import aiohttp
 import json
 from aiohttp import ClientSession, TCPConnector, ClientTimeout
 
 
-class Async_API_Client:
+class AsyncAPIClient:
     def __init__(self, api_url: str, headers: dict[str, str], max_connections: int = 100):
         self.api_url = api_url
         self.headers = headers
@@ -33,5 +32,3 @@ class Async_API_Client:
         async with ClientSession(connector=connector) as session:
             tasks = [self.fetch(session, index) for index in range(1, 954)]
             return await asyncio.gather(*tasks, return_exceptions=True)
-
-
