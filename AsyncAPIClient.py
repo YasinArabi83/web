@@ -5,6 +5,7 @@ import json
 from aiohttp import ClientSession, TCPConnector, ClientTimeout
 
 
+
 class AsyncAPIClient:
     def __init__(self, api_url: str, headers: dict[str, str], max_connections: int = 100):
         self.api_url = api_url
@@ -17,12 +18,12 @@ class AsyncAPIClient:
         try:
             async with session.get(f"{self.api_url}{index}", headers=self.headers, timeout=timeout) as response:
                 if response.status == 200:
-                    data = await json.loads(await response.read())
-                    result = data['data']['ads']
+                    data = await response.json()
+                    result = data["data"]["ads"]
                     return result
                 else:
                     return {"error": f"Failed to fetch data (status: {response.status})"}
-        except ClientTimeout:
+        except asyncio.TimeoutError:
             return {"error": "Request timed out"}
         except Exception as e:  # Catch other potential errors
             return {"error": f"Unexpected error: {e}"}
