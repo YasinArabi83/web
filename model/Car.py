@@ -13,3 +13,6 @@ class Car(Base):
     location: Mapped[str] = mapped_column(String())
     body_color: Mapped[str] = mapped_column(String())
     price: Mapped[int] = mapped_column(Integer())
+
+    def __repr__(self):
+        return f"<Car(title='{self.title}', year={self.year}, price={self.price})>"
