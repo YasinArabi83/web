@@ -14,7 +14,7 @@ class AsyncAPIClient:
 
     async def fetch(self, session: ClientSession, index):
         print(f"Running fetch coroutine for index {index}")
-        timeout = aiohttp.ClientTimeout(total=5)  # Adjust timeout as needed
+        timeout = aiohttp.ClientTimeout(total=25)  # Adjust timeout as needed
         try:
             async with session.get(f"{self.api_url}{index}", headers=self.headers, timeout=timeout) as response:
                 if response.status == 200:
@@ -31,5 +31,5 @@ class AsyncAPIClient:
     async def get_data(self):
         connector = TCPConnector(limit=self.max_connections)
         async with ClientSession(connector=connector) as session:
-            tasks = [self.fetch(session, index) for index in range(1, 954)]
+            tasks = [self.fetch(session, index) for index in range(0, 954)]
             return await asyncio.gather(*tasks, return_exceptions=True)
