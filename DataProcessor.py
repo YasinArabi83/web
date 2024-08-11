@@ -15,7 +15,7 @@ class DataProcessor:
                         "mileage": try_pars(format_modifier(ad["detail"]["mileage"])),
                         "location": ad["detail"]["location"],
                         "body_color": ad["detail"]["body_color"],
-                        "price": ad["price"]["price"],
+                        "price": try_pars(format_modifier(ad["price"]["price"])),
                     }
                     car_ads.append(car_ad)
 
