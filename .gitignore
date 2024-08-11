@@ -6,3 +6,8 @@
 .idea/inspectionProfiles/profiles_settings.xml
 /Ads.db
 /.idea/dataSources.xml
+__pycache__/AsyncAPIClient.cpython-312.pyc
+__pycache__/DataProcessor.cpython-312.pyc
+__pycache__/DbManager.cpython-312.pyc
+model/__pycache__/base.cpython-312.pyc
+model/__pycache__/Car.cpython-312.pyc
