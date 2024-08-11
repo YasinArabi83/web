@@ -30,3 +30,39 @@ async def main():
     return successful_data
 
 
+if __name__ == '__main__':
+    engine = create_engine('sqlite:///Ads.db')
+    Base.metadata.create_all(engine)
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    db_manager = DbManager("sqlite:///Ads.db", session)
+    while True:
+        print(" =========================== \n"
+              "Menu \n \n"
+              "1. Update db \n"
+              "2. Get all \n"
+              "3. Get cars between pricest\n"
+              "4. Exit\n\n"
+              "===========================")
+        choice = input("What`s your choice: ")
+
+        if choice == "1":
+            raw_data = asyncio.run(main())
+            data_processor = DataProcessor(raw_data)
+            car_ads = data_processor.data_processor()
+            db_manager.save_to_db(car_ads)
+
+        elif choice == "2":
+            all_ads = db_manager.get_all()
+            for ad in all_ads:
+                print(ad)
+        elif choice == "3":
+            start_price = int(input("What`s your starting price: "))
+            end_price = int(input("What`s your ending price: "))
+            ads = db_manager.get_cars_between_prices(start_price, end_price)
+            for ad in ads:
+                print(ad)
+        elif choice == "4":
+            break
+        else:
+            print("Invalid selection. Please select again.\n")
