@@ -53,3 +53,16 @@ def test_get_all(db_manager):
     all_ads = db_manager.get_all()
     assert len(all_ads) == 1
     assert all_ads[0].title == "Car 3"
+
+
+def test_get_cars_between_prices(db_manager):
+    ads = [
+        {"title": "Car 4", "year": 2018, "mileage": 30000, "location": "Location 4", "body_color": "Yellow",
+         "price": 10000},
+        {"title": "Car 5", "year": 2017, "mileage": 40000, "location": "Location 5", "body_color": "Black",
+         "price": 5000}
+    ]
+    db_manager.save_to_db(ads)
+    cars = db_manager.get_cars_between_prices(6000, 15000)
+    assert len(cars) == 1
+    assert cars[0].title == "Car 4"
