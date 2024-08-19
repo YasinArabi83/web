@@ -42,3 +42,14 @@ def test_save_to_db(db_manager):
     assert len(all_ads) == 2
     assert all_ads[0].title == "Car 1"
     assert all_ads[1].title == "Car 2"
+
+
+def test_get_all(db_manager):
+    ads = [
+        {"title": "Car 3", "year": 2021, "mileage": 5000, "location": "Location 3", "body_color": "Green",
+         "price": 25000}
+    ]
+    db_manager.save_to_db(ads)
+    all_ads = db_manager.get_all()
+    assert len(all_ads) == 1
+    assert all_ads[0].title == "Car 3"
