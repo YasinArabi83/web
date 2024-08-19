@@ -48,3 +48,16 @@ async def test_fetch_timeout(api_client):
         async with ClientSession() as session:
             result = await api_client.fetch(session, index)
             assert result == {"error": "Request timed out"}
+
+
+@pytest.mark.asyncio
+async def test_get_data(api_client):
+    expected_data = [{"data": {"ads": ["ad1", "ad2"]}} for _ in range(954)]
+
+    with aioresponses() as m:
+        for index in range(954):
+            m.get(f"{api_client.api_url}{index}", payload=expected_data[index])
+
+        results = await api_client.get_data()
+        for result, expected in zip(results, expected_data):
+            assert result == expected["data"]["ads"]
