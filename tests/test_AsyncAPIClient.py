@@ -1,3 +1,5 @@
+import asyncio
+
 import pytest
 from aioresponses import aioresponses
 from aiohttp import ClientSession
@@ -34,3 +36,15 @@ async def test_fetch_failure(api_client):
         async with ClientSession() as session:
             result = await api_client.fetch(session, index)
             assert result == {"error": "Failed to fetch data (status: 404)"}
+
+
+@pytest.mark.asyncio
+async def test_fetch_timeout(api_client):
+    index = 1
+
+    with aioresponses() as m:
+        m.get(f"{api_client.api_url}{index}", exception=asyncio.TimeoutError)
+
+        async with ClientSession() as session:
+            result = await api_client.fetch(session, index)
+            assert result == {"error": "Request timed out"}
