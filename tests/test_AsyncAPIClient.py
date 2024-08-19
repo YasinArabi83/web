@@ -22,3 +22,15 @@ async def test_fetch_success(api_client):
         async with ClientSession() as session:
             result = await api_client.fetch(session, index)
             assert result == expected_data["data"]["ads"]
+
+
+@pytest.mark.asyncio
+async def test_fetch_failure(api_client):
+    index = 1
+
+    with aioresponses() as m:
+        m.get(f"{api_client.api_url}{index}", status=404)
+
+        async with ClientSession() as session:
+            result = await api_client.fetch(session, index)
+            assert result == {"error": "Failed to fetch data (status: 404)"}
